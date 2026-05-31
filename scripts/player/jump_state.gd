@@ -23,4 +23,4 @@ func physics_update(delta: float) -> void:
 	player.velocity.x = dir * 200.0
 
 	if player.velocity.y > 0:
-		state_machine.change_state(FallState.new())
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.FALL)

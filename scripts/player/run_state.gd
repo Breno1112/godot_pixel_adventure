@@ -17,11 +17,11 @@ func handle_input() -> void:
 	var dir := Input.get_axis("left", "right")
 
 	if Input.is_action_just_pressed("jump") and player.is_on_floor():
-		state_machine.change_state(JumpState.new())
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.JUMP)
 		return
 
 	if dir == 0:
-		state_machine.change_state(IdleState.new())
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 
 
 func physics_update(delta: float) -> void:
@@ -37,4 +37,4 @@ func physics_update(delta: float) -> void:
 	player.velocity.y += player.get_gravity().y * delta
 
 	if not player.is_on_floor():
-		state_machine.change_state(FallState.new())
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.FALL)

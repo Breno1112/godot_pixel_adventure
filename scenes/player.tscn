@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://t2kgpluglmha" path="res://scripts/player/run_state.gd" id="17_qfm1y"]
 [ext_resource type="Script" uid="uid://bptuwteuulpl0" path="res://scripts/player/jump_state.gd" id="18_fulsm"]
 [ext_resource type="Script" uid="uid://dfrug46x6p5jd" path="res://scripts/player/fall_state.gd" id="19_4r5pv"]
+[ext_resource type="Script" uid="uid://cocfsukqmxq3b" path="res://scripts/player/walk_state.gd" id="20_60mlk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bwjto"]
 atlas = ExtResource("1_1jxqw")
@@ -464,3 +465,6 @@ script = ExtResource("18_fulsm")
 
 [node name="FallState" type="Node" parent="PlayerStateMachine" unique_id=1538581461]
 script = ExtResource("19_4r5pv")
+
+[node name="WalkState" type="Node" parent="PlayerStateMachine" unique_id=31261088]
+script = ExtResource("20_60mlk")
