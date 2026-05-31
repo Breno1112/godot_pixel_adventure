@@ -7,7 +7,7 @@ func enter():
 
 func handle_input() -> void:
 	if Input.is_action_just_pressed("jump") and player.is_on_floor():
-		state_machine.change_state(JumpState.new())
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.JUMP)
 
 
 func physics_update(delta: float) -> void:
@@ -18,6 +18,6 @@ func physics_update(delta: float) -> void:
 
 	if player.is_on_floor():
 		if dir == 0:
-			state_machine.change_state(IdleState.new())
+			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 		else:
-			state_machine.change_state(RunState.new())
+			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)

@@ -13,7 +13,7 @@ var can_control: bool = false
 func _ready() -> void:
 	state_machine.init(self, animation)
 	await spawn_player()
-	state_machine.change_state(IdleState.new())
+	state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 
 
 func _physics_process(delta: float) -> void:
