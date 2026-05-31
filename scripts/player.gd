@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var jump_sound: AudioStreamPlayer2D = $JumpSound
+@onready var spawn_sound: AudioStreamPlayer2D = $SpawnSound
 
 @export var WALK_VELOCITY: float = 150.0
 @export var JUMP_VELOCITY: float = -400.0
@@ -22,8 +23,9 @@ func _ready() -> void:
 func spawn_player():
 	can_control = false
 	animated_sprite_2d.play("spawn")
+	spawn_sound.play()
 	print("animation started")
-	await get_tree().create_timer(SPAWN_ANIMATION_DURATION_SECONDS).timeout
+	await get_tree().create_timer(SPAWN_ANIMATION_DURATION_SECONDS) .timeout
 	animated_sprite_2d.stop()
 	animated_sprite_2d.play("idle")
 	can_control = true
