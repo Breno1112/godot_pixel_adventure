@@ -12,6 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://bit11r5xxjlk" path="res://assets/sounds/male_grunt_jump.wav" id="9_ur7pv"]
 [ext_resource type="AudioStream" uid="uid://bsjpdfempyymo" path="res://assets/sounds/player_spawn.mp3" id="11_d2wvv"]
 [ext_resource type="Script" uid="uid://c73870obyea6e" path="res://scripts/player/player_movement.gd" id="12_3v2ag"]
+[ext_resource type="Script" uid="uid://xw2jr2c3qoro" path="res://scripts/player/player_animation.gd" id="13_jej6c"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bwjto"]
 atlas = ExtResource("1_1jxqw")
@@ -436,3 +437,6 @@ walk_velocity = 300.0
 max_run_velocity = 600.0
 run_acceleration = 150.0
 run_deceleration = 150.0
+
+[node name="PlayerAnimation" type="Node" parent="." unique_id=1477145048]
+script = ExtResource("13_jej6c")
