@@ -13,6 +13,12 @@
 [ext_resource type="AudioStream" uid="uid://bsjpdfempyymo" path="res://assets/sounds/player_spawn.mp3" id="11_d2wvv"]
 [ext_resource type="Script" uid="uid://c73870obyea6e" path="res://scripts/player/player_movement.gd" id="12_3v2ag"]
 [ext_resource type="Script" uid="uid://xw2jr2c3qoro" path="res://scripts/player/player_animation.gd" id="13_jej6c"]
+[ext_resource type="Script" uid="uid://bchniiu488gie" path="res://scripts/player/player_state.gd" id="14_f1ej7"]
+[ext_resource type="Script" uid="uid://c2gu66dgyl3jd" path="res://scripts/player/player_state_machine.gd" id="15_oprun"]
+[ext_resource type="Script" uid="uid://gqlkutsbxfei" path="res://scripts/player/idle_state.gd" id="16_a8ls1"]
+[ext_resource type="Script" uid="uid://t2kgpluglmha" path="res://scripts/player/run_state.gd" id="17_qfm1y"]
+[ext_resource type="Script" uid="uid://bptuwteuulpl0" path="res://scripts/player/jump_state.gd" id="18_fulsm"]
+[ext_resource type="Script" uid="uid://dfrug46x6p5jd" path="res://scripts/player/fall_state.gd" id="19_4r5pv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bwjto"]
 atlas = ExtResource("1_1jxqw")
@@ -440,3 +446,21 @@ run_deceleration = 150.0
 
 [node name="PlayerAnimation" type="Node" parent="." unique_id=1477145048]
 script = ExtResource("13_jej6c")
+
+[node name="PlayerState" type="Node" parent="." unique_id=1714980220]
+script = ExtResource("14_f1ej7")
+
+[node name="PlayerStateMachine" type="Node" parent="." unique_id=973341663]
+script = ExtResource("15_oprun")
+
+[node name="IdleState" type="Node" parent="PlayerStateMachine" unique_id=1210395534]
+script = ExtResource("16_a8ls1")
+
+[node name="RunState" type="Node" parent="PlayerStateMachine" unique_id=1582152560]
+script = ExtResource("17_qfm1y")
+
+[node name="JumpState" type="Node" parent="PlayerStateMachine" unique_id=133325004]
+script = ExtResource("18_fulsm")
+
+[node name="FallState" type="Node" parent="PlayerStateMachine" unique_id=1538581461]
+script = ExtResource("19_4r5pv")
