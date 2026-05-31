@@ -3,6 +3,9 @@ extends CharacterBody2D
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var jump_sound: AudioStreamPlayer2D = $JumpSound
 @onready var spawn_sound: AudioStreamPlayer2D = $SpawnSound
+@onready var player_movement: Node = $PlayerMovement
+
+
 
 @export var WALK_VELOCITY: float = 150.0
 @export var JUMP_VELOCITY: float = -400.0
@@ -17,10 +20,12 @@ var can_control: bool = false
 
 
 func _ready() -> void:
+	player_movement.init(self)
 	spawn_player()
-	current_speed_limit = WALK_VELOCITY
+	#current_speed_limit = WALK_VELOCITY
 	
 func spawn_player():
+	player_movement.set_can_move(false)
 	can_control = false
 	animated_sprite_2d.play("spawn")
 	spawn_sound.play()
@@ -28,6 +33,7 @@ func spawn_player():
 	await get_tree().create_timer(SPAWN_ANIMATION_DURATION_SECONDS) .timeout
 	animated_sprite_2d.stop()
 	animated_sprite_2d.play("idle")
+	player_movement.set_can_move(true)
 	can_control = true
 	print("animation finished")
 
@@ -35,36 +41,28 @@ func spawn_player():
 func _physics_process(delta: float) -> void:
 	if not can_control:
 		return
-	apply_gravity(delta)
 	handle_jump()
-	update_run_state(delta)
+	update_run_state()
 	handle_horizontal_movement()
 	update_animation()
 
 	move_and_slide()
 
 
-func apply_gravity(delta: float) -> void:
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-
 func handle_jump() -> void:
-	if Input.is_action_just_pressed("jump") and can_jump():
-		do_jump()
+	if Input.is_action_just_pressed("jump"):
+		player_movement.start_jumping()
+		return
+	if Input.is_action_just_released("jump"):
+		player_movement.stop_jumping()
 
 
-func update_run_state(delta: float) -> void:
+func update_run_state() -> void:
 	if should_accelerate_run():
-		current_speed_limit = min(
-			current_speed_limit + RUN_ACCELERATION * delta,
-			MAX_RUN_VELOCITY
-		)
+		player_movement.start_running()
+		
 	else:
-		current_speed_limit = max(
-			current_speed_limit - RUN_DEACCELERATION * delta,
-			WALK_VELOCITY
-		)
+		player_movement.stop_running()
 
 
 func should_accelerate_run() -> bool:
@@ -77,16 +75,17 @@ func should_accelerate_run() -> bool:
 
 func handle_horizontal_movement() -> void:
 	var direction := Input.get_axis("left", "right")
+	player_movement.handle_horizontal_movement(direction)
 
-	if direction != 0:
-		velocity.x = direction * current_speed_limit
-		update_facing_direction(direction)
-	else:
-		velocity.x = move_toward(
-			velocity.x,
-			0,
-			current_speed_limit
-		)
+	#if direction != 0:
+		#velocity.x = direction * current_speed_limit
+		#update_facing_direction(direction)
+	#else:
+		#velocity.x = move_toward(
+			#velocity.x,
+			#0,
+			#current_speed_limit
+		#)
 
 
 func update_facing_direction(direction: float) -> void:
@@ -110,11 +109,7 @@ func update_animation() -> void:
 		animated_sprite_2d.animation = "idle"
 
 
-func can_jump() -> bool:
-	return is_on_floor()
-
-
 func do_jump() -> void:
-	velocity.y = JUMP_VELOCITY
+	#velocity.y = JUMP_VELOCITY
 	animated_sprite_2d.animation = "jump"
 	jump_sound.play()
