@@ -1,43 +1,102 @@
 extends CharacterBody2D
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var jump_sound: AudioStreamPlayer2D = $JumpSound
 
+@export var WALK_VELOCITY: float = 150.0
+@export var JUMP_VELOCITY: float = -400.0
+@export var MAX_RUN_VELOCITY: float = 300.0
+@export var RUN_ACCELERATION: float = 300.0
+@export var RUN_DEACCELERATION: float = 400.0
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -850.0
+var current_speed_limit: float
+
+
+func _ready() -> void:
+	current_speed_limit = WALK_VELOCITY
 
 
 func _physics_process(delta: float) -> void:
-	
-	# Add running animation
-	if velocity.x > 1 or velocity.x < -1:
+	apply_gravity(delta)
+	handle_jump()
+	update_run_state(delta)
+	handle_horizontal_movement()
+	update_animation()
+
+	move_and_slide()
+
+
+func apply_gravity(delta: float) -> void:
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+
+func handle_jump() -> void:
+	if Input.is_action_just_pressed("jump") and can_jump():
+		do_jump()
+
+
+func update_run_state(delta: float) -> void:
+	if should_accelerate_run():
+		current_speed_limit = min(
+			current_speed_limit + RUN_ACCELERATION * delta,
+			MAX_RUN_VELOCITY
+		)
+	else:
+		current_speed_limit = max(
+			current_speed_limit - RUN_DEACCELERATION * delta,
+			WALK_VELOCITY
+		)
+
+
+func should_accelerate_run() -> bool:
+	return (
+		is_on_floor()
+		and Input.is_action_pressed("run")
+		and abs(Input.get_axis("left", "right")) > 0.0
+	)
+
+
+func handle_horizontal_movement() -> void:
+	var direction := Input.get_axis("left", "right")
+
+	if direction != 0:
+		velocity.x = direction * current_speed_limit
+		update_facing_direction(direction)
+	else:
+		velocity.x = move_toward(
+			velocity.x,
+			0,
+			current_speed_limit
+		)
+
+
+func update_facing_direction(direction: float) -> void:
+	if direction > 0:
+		animated_sprite_2d.flip_h = false
+	elif direction < 0:
+		animated_sprite_2d.flip_h = true
+
+
+func update_animation() -> void:
+	if not is_on_floor():
+		if velocity.y < 0:
+			animated_sprite_2d.animation = "jump"
+		else:
+			animated_sprite_2d.animation = "fall"
+		return
+
+	if abs(velocity.x) > 1:
 		animated_sprite_2d.animation = "run"
 	else:
 		animated_sprite_2d.animation = "idle"
-	
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-		if velocity.y > 0:
-			animated_sprite_2d.animation = "fall"
 
-	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		animated_sprite_2d.animation = "jump"
-		jump_sound.play()
 
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis("left", "right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+func can_jump() -> bool:
+	return is_on_floor()
 
-	move_and_slide()
-	
-	if direction == 1.0:
-		animated_sprite_2d.flip_h = false
-	elif direction == -1.0:
-		animated_sprite_2d.flip_h = true
+
+func do_jump() -> void:
+	velocity.y = JUMP_VELOCITY
+	animated_sprite_2d.animation = "jump"
+	jump_sound.play()
