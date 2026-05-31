@@ -7,6 +7,7 @@ var jump_pressed := true
 
 func enter() -> void:
 	player.velocity.y = jump_velocity
+	animation.play("jump")
 
 
 func handle_input() -> void:

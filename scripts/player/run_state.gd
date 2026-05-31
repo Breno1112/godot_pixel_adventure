@@ -10,7 +10,7 @@ var decel := 400.0
 
 
 func enter() -> void:
-	pass
+	animation.play("run")
 
 
 func handle_input() -> void:

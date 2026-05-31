@@ -3,6 +3,7 @@ class_name PlayerState
 
 var state_machine: PlayerStateMachine
 var player: CharacterBody2D
+var animation: PlayerAnimation
 
 
 func enter() -> void:

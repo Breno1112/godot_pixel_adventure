@@ -2,6 +2,9 @@ extends PlayerState
 class_name FallState
 
 
+func enter():
+	animation.play("fall")
+
 func handle_input() -> void:
 	if Input.is_action_just_pressed("jump") and player.is_on_floor():
 		state_machine.change_state(JumpState.new())

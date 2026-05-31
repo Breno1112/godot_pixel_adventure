@@ -3,6 +3,7 @@ class_name IdleState
 
 
 func enter() -> void:
+	animation.play("idle")
 	player.velocity.x = move_toward(player.velocity.x, 0, 9999)
 
 
