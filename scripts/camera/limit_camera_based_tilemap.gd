@@ -1,26 +1,27 @@
 extends Camera2D
 
-@onready var tile_map_layer: TileMapLayer = $"../../TileMapLayer"
+@export var tilemap: TileMapLayer
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if tile_map_layer:
-		# Get the used rectangle of the tilemap
-		var map_rect = tile_map_layer.get_used_rect()
-		var cell_size = tile_map_layer.tile_set.tile_size
-		
-		# Calculate pixel boundaries
-		limit_left = int(map_rect.position.x * cell_size.x * zoom.x)
-		limit_top = int(map_rect.position.y * cell_size.y * zoom.y)
-		limit_right = int(map_rect.end.x * cell_size.x * zoom.x)
-		limit_bottom = int(map_rect.end.y * cell_size.y * zoom.y)
-		print("limit_left: ", limit_left)
-		print("limit_right: ", limit_right)
-		print("limit_top: ", limit_top)
-		print("limit_bottom: ", limit_bottom)
-	pass # Replace with function body.
+	if tilemap == null:
+		push_error("TileMapLayer not assigned!")
+		return
 
+	var used_rect = tilemap.get_used_rect()
+	var tile_size = tilemap.tile_set.tile_size
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	var map_left = tilemap.global_position.x + used_rect.position.x * tile_size.x
+	var map_top = tilemap.global_position.y + used_rect.position.y * tile_size.y
+
+	var map_right = tilemap.global_position.x + (used_rect.position.x + used_rect.size.x) * tile_size.x
+	var map_bottom = tilemap.global_position.y + (used_rect.position.y + used_rect.size.y) * tile_size.y
+
+	limit_left = int(map_left)
+	limit_top = int(map_top)
+	limit_right = int(map_right)
+	limit_bottom = int(map_bottom)
+
+	print("Left: ", limit_left)
+	print("Top: ", limit_top)
+	print("Right: ", limit_right)
+	print("Bottom: ", limit_bottom)

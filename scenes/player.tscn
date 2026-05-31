@@ -355,6 +355,9 @@ size = Vector2(21, 25)
 [node name="Player" type="CharacterBody2D" unique_id=1616248420]
 scale = Vector2(2, 2)
 script = ExtResource("1_smehm")
+WALK_VELOCITY = 300
+JUMP_VELOCITY = -850
+RUN_VELOCITY = 500
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=751301151]
 texture_filter = 1

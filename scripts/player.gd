@@ -3,8 +3,9 @@ extends CharacterBody2D
 @onready var jump_sound: AudioStreamPlayer2D = $JumpSound
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -850.0
+@export var WALK_VELOCITY: int
+@export var JUMP_VELOCITY: int
+@export var RUN_VELOCITY: int
 
 
 func _physics_process(delta: float) -> void:
@@ -22,22 +23,41 @@ func _physics_process(delta: float) -> void:
 			animated_sprite_2d.animation = "fall"
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		animated_sprite_2d.animation = "jump"
-		jump_sound.play()
+	if Input.is_action_just_pressed("jump") and can_jump():
+		do_jump()
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction := Input.get_axis("left", "right")
+	var new_speed = calculate_new_speed()
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = direction * new_speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, new_speed)
 
 	move_and_slide()
+	global_position = global_position.round()
 	
 	if direction == 1.0:
 		animated_sprite_2d.flip_h = false
 	elif direction == -1.0:
 		animated_sprite_2d.flip_h = true
+		
+func can_jump() -> bool:
+	return is_on_floor()
+	
+func is_running() -> bool:
+	return Input.is_action_pressed("run")
+	
+func can_run() -> bool:
+	return is_on_floor()
+	
+func calculate_new_speed() -> int:
+	if can_run() and is_running():
+		return RUN_VELOCITY
+	return WALK_VELOCITY
+	
+func do_jump():
+	velocity.y = JUMP_VELOCITY
+	animated_sprite_2d.animation = "jump"
+	jump_sound.play()
