@@ -432,5 +432,7 @@ stream = ExtResource("11_d2wvv")
 
 [node name="PlayerMovement" type="Node" parent="." unique_id=703181754]
 script = ExtResource("12_3v2ag")
-WALK_VELOCITY = 300.0
-MAX_RUN_VELOCITY = 800.0
+walk_velocity = 300.0
+max_run_velocity = 600.0
+run_acceleration = 150.0
+run_deceleration = 150.0

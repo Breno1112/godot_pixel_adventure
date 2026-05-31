@@ -1,61 +1,103 @@
 extends Node
+class_name PlayerMovement
 
 var player: CharacterBody2D
 
-@export var WALK_VELOCITY: float = 150.0
-@export var JUMP_VELOCITY: float = -850.0
-@export var MAX_RUN_VELOCITY: float = 300.0
-@export var RUN_ACCELERATION: float = 300.0
-@export var RUN_DEACCELERATION: float = 400.0
-@export var SPAWN_ANIMATION_DURATION_SECONDS: int = 0
+# ----------------------------
+# CONFIG
+# ----------------------------
+
+@export var walk_velocity: float = 150.0
+@export var max_run_velocity: float = 300.0
+@export var run_acceleration: float = 300.0
+@export var run_deceleration: float = 400.0
+@export var jump_velocity: float = -850.0
+
+# ----------------------------
+# STATE
+# ----------------------------
 
 var current_speed_limit: float
-var is_player_running: bool = false
-var is_player_jumping: bool = false
+var is_running: bool = false
+var jump_request: bool = false
 var can_move: bool = false
+var direction: float = 0.0
 
 
-func init(p: CharacterBody2D):
+# ----------------------------
+# INIT
+# ----------------------------
+
+func init(p: CharacterBody2D) -> void:
 	player = p
-	current_speed_limit = WALK_VELOCITY
+	current_speed_limit = walk_velocity
 
 
-func _physics_process(delta: float) -> void:
+func set_can_move(value: bool) -> void:
+	can_move = value
+
+
+# ----------------------------
+# MAIN LOOP
+# ----------------------------
+
+func tick(delta: float) -> void:
 	if not can_move:
 		return
-	apply_gravity(delta)
-	handle_jump()
-	update_run_state(delta)
-	#move_and_slide()
-	
-func set_can_move(new_value: bool):
-	can_move = new_value
-	
-func start_running():
-	is_player_running = true
-	
-func stop_running():
-	is_player_running = false
 
+	apply_gravity(delta)
+	update_run_state(delta)
+	apply_horizontal_movement()
+	apply_jump()
+
+
+# ----------------------------
+# INPUT FROM PLAYER
+# ----------------------------
+
+func set_direction(value: float) -> void:
+	direction = value
+
+
+func start_running() -> void:
+	is_running = true
+
+
+func stop_running() -> void:
+	is_running = false
+
+
+func start_jumping() -> void:
+	jump_request = true
+
+
+func stop_jumping() -> void:
+	jump_request = false
+
+
+# ----------------------------
+# PHYSICS
+# ----------------------------
 
 func apply_gravity(delta: float) -> void:
 	if not player.is_on_floor():
 		player.velocity += player.get_gravity() * delta
-		
+
+
 func update_run_state(delta: float) -> void:
-	if is_player_running:
+	if is_running:
 		current_speed_limit = min(
-			current_speed_limit + RUN_ACCELERATION * delta,
-			MAX_RUN_VELOCITY
+			current_speed_limit + run_acceleration * delta,
+			max_run_velocity
 		)
 	else:
 		current_speed_limit = max(
-			current_speed_limit - RUN_DEACCELERATION * delta,
-			WALK_VELOCITY
+			current_speed_limit - run_deceleration * delta,
+			walk_velocity
 		)
-		
-func handle_horizontal_movement(direction: float) -> void:
 
+
+func apply_horizontal_movement() -> void:
 	if direction != 0:
 		player.velocity.x = direction * current_speed_limit
 	else:
@@ -64,20 +106,14 @@ func handle_horizontal_movement(direction: float) -> void:
 			0,
 			current_speed_limit
 		)
-		
-func handle_jump() -> void:
-	if is_player_jumping and can_jump():
-		do_jump()
-		
-func can_jump() -> bool:
-	return player.is_on_floor()
 
 
-func do_jump() -> void:
-	player.velocity.y = JUMP_VELOCITY
-	
-func start_jumping():
-	is_player_jumping = true
+func apply_jump() -> void:
+	if not jump_request:
+		return
 
-func stop_jumping():
-	is_player_jumping = false
+	if not player.is_on_floor():
+		return
+
+	player.velocity.y = jump_velocity
+	jump_request = false
