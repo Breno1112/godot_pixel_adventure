@@ -8,15 +8,31 @@ extends CharacterBody2D
 @export var MAX_RUN_VELOCITY: float = 300.0
 @export var RUN_ACCELERATION: float = 300.0
 @export var RUN_DEACCELERATION: float = 400.0
+@export var SPAWN_ANIMATION_DURATION_SECONDS: int = 0
 
 var current_speed_limit: float
 
+var can_control: bool = false
+
 
 func _ready() -> void:
+	spawn_player()
 	current_speed_limit = WALK_VELOCITY
+	
+func spawn_player():
+	can_control = false
+	animated_sprite_2d.play("spawn")
+	print("animation started")
+	await get_tree().create_timer(SPAWN_ANIMATION_DURATION_SECONDS).timeout
+	animated_sprite_2d.stop()
+	animated_sprite_2d.play("idle")
+	can_control = true
+	print("animation finished")
 
 
 func _physics_process(delta: float) -> void:
+	if not can_control:
+		return
 	apply_gravity(delta)
 	handle_jump()
 	update_run_state(delta)
