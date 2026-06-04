@@ -5,6 +5,7 @@ class_name RunState
 
 var speed := 150.0
 @export var max_speed := 300.0
+@export var min_speed := 150.0
 var accel := 300.0
 var decel := 400.0
 
@@ -30,11 +31,8 @@ func physics_update(delta: float) -> void:
 	# run acceleration
 	if Input.is_action_pressed("run"):
 		speed = min(speed + accel * delta, max_speed)
-		print("player accel is ", accel)
-		print("player is running with speed ", speed)
-		print("player max speed ", max_speed)
 	else:
-		speed = max(speed - decel * delta, 150.0)
+		speed = max(speed - decel * delta, min_speed)
 
 	player.velocity.x = dir * speed
 	player.velocity.y += player.get_gravity().y * delta

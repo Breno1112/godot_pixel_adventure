@@ -1,8 +1,7 @@
 extends PlayerState
 class_name JumpState
 
-var jump_velocity := -850.0
-var jump_pressed := true
+@export var jump_velocity := -850.0
 
 
 func enter() -> void:
@@ -12,7 +11,6 @@ func enter() -> void:
 
 func handle_input() -> void:
 	if Input.is_action_just_released("jump"):
-		jump_pressed = false
 		player.velocity.y *= 0.5  # variable jump height
 
 
