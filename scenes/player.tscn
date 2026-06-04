@@ -459,6 +459,7 @@ script = ExtResource("16_a8ls1")
 
 [node name="RunState" type="Node" parent="PlayerStateMachine" unique_id=1582152560]
 script = ExtResource("17_qfm1y")
+max_speed = 3000.0
 
 [node name="JumpState" type="Node" parent="PlayerStateMachine" unique_id=133325004]
 script = ExtResource("18_fulsm")
