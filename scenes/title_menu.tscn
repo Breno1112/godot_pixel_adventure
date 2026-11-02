@@ -1,5 +1,9 @@
 [gd_scene format=3 uid="uid://def2y7eykniph"]
 
+[ext_resource type="Texture2D" uid="uid://b53h08d1bkcq7" path="res://assets/sprites/buttons/botao_jogar.png" id="1_ij6cu"]
+[ext_resource type="Texture2D" uid="uid://6s2kafghtcdi" path="res://assets/sprites/buttons/botao_jogar_pressed.png" id="2_a2du2"]
+[ext_resource type="Texture2D" uid="uid://cb7vjseuhtlf2" path="res://assets/sprites/buttons/botao_jogar_hover.png" id="3_m3le7"]
+
 [node name="Main Menu" type="Node2D" unique_id=2124090895]
 
 [node name="Button_manager" type="Control" parent="." unique_id=206507811]
@@ -8,13 +12,15 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="New_game" type="Button" parent="Button_manager" unique_id=1394558144]
+[node name="New_game" type="TextureButton" parent="Button_manager" unique_id=1262814299]
 layout_mode = 0
 offset_left = 360.0
 offset_top = 300.0
 offset_right = 600.0
 offset_bottom = 360.0
-text = "New Game"
+texture_normal = ExtResource("1_ij6cu")
+texture_pressed = ExtResource("2_a2du2")
+texture_hover = ExtResource("3_m3le7")
 
 [node name="Load_game" type="Button" parent="Button_manager" unique_id=475539524]
 layout_mode = 0
