@@ -26,7 +26,7 @@ func handle_input():
 func physics_update(delta: float) -> void:
 	var dir := Input.get_axis("left", "right")
 	
-	player.speed = max(player.speed - player.decel * delta, 150.0)
+	player.speed = max(player.speed - player.decel * delta, player.min_speed_const)
 
 	player.velocity.x = dir * player.speed
 	player.velocity.y += player.get_gravity().y * delta

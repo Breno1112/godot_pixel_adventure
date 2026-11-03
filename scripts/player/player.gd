@@ -6,6 +6,7 @@ extends CharacterBody2D
 @onready var spawn_sound: AudioStreamPlayer2D = $SpawnSound
 
 @export var spawn_duration: float = 2
+@export var min_speed_const := 150.0
 @export var speed := 150.0
 @export var max_speed := 300.0
 @export var accel := 300.0

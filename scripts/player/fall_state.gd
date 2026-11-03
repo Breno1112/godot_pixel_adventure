@@ -20,4 +20,7 @@ func physics_update(delta: float) -> void:
 		if dir == 0:
 			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 		else:
-			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)
+			if Input.is_action_just_pressed("run"):
+				state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)
+			else:
+				state_machine.change_state(PlayerStateMachine.PlayerStateEnum.WALK)
