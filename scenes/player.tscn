@@ -326,6 +326,73 @@ animations = [{
 "speed": 20.0
 }, {
 "frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_331ug")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_ny14h")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_ibah8")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_3iwfv")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_qwsg1")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_1xqrm")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_bfour")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_8gr2b")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_vl8ci")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_ieltc")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_fddr8")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_oybyf")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2wvv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3v2ag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jej6c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f1ej7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oprun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8ls1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qfm1y")
+}],
+"loop": 1,
+"name": &"spawn",
+"speed": 20.0
+}, {
+"frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_331ug")
 }, {
@@ -363,33 +430,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_oybyf")
 }],
 "loop": 1,
-"name": &"run",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_d2wvv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3v2ag")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jej6c")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_f1ej7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_oprun")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_a8ls1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qfm1y")
-}],
-"loop": 1,
-"name": &"spawn",
+"name": &"walk",
 "speed": 20.0
 }, {
 "frames": [{
@@ -419,13 +460,15 @@ size = Vector2(21, 25)
 [node name="Player" type="CharacterBody2D" unique_id=1616248420]
 scale = Vector2(2, 2)
 script = ExtResource("1_d2wvv")
+max_speed = 500.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=751301151]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_tw8ou")
-animation = &"spawn"
+animation = &"walk"
 autoplay = "idle"
-frame_progress = 0.40402466
+frame = 3
+frame_progress = 0.84506905
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1430295491]
 position = Vector2(0.5, 3.5)

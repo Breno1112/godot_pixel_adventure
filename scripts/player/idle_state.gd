@@ -13,7 +13,10 @@ func handle_input() -> void:
 		return
 
 	if Input.get_axis("left", "right") != 0:
-		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)
+		if Input.is_action_pressed("run"):
+			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)
+		else:
+			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.WALK)
 
 
 func physics_update(delta: float) -> void:

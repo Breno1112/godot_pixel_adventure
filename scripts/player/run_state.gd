@@ -2,38 +2,32 @@ extends PlayerState
 class_name RunState
 
 
-
-var speed := 150.0
-var max_speed := 300.0
-var accel := 300.0
-var decel := 400.0
-
-
 func enter() -> void:
 	animation.play("run")
 
 
 func handle_input() -> void:
-	var dir := Input.get_axis("left", "right")
-
 	if Input.is_action_just_pressed("jump") and player.is_on_floor():
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.JUMP)
 		return
+		
+	var dir := Input.get_axis("left", "right")
 
 	if dir == 0:
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
+	
+	if Input.is_action_just_released("run"):
+		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.WALK)
+		return
 
 
 func physics_update(delta: float) -> void:
 	var dir := Input.get_axis("left", "right")
 
 	# run acceleration
-	if Input.is_action_pressed("run"):
-		speed = min(speed + accel * delta, max_speed)
-	else:
-		speed = max(speed - decel * delta, 150.0)
+	player.speed = min(player.speed + player.accel * delta, player.max_speed)
 
-	player.velocity.x = dir * speed
+	player.velocity.x = dir * player.speed
 	player.velocity.y += player.get_gravity().y * delta
 
 	if not player.is_on_floor():
