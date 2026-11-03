@@ -14,7 +14,7 @@ func physics_update(delta: float) -> void:
 	player.velocity.y += player.get_gravity().y * delta
 
 	var dir := Input.get_axis("left", "right")
-	player.velocity.x = dir * 200.0
+	player.velocity.x = dir * player.speed
 
 	if player.is_on_floor():
 		if dir == 0:

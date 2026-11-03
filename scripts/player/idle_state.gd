@@ -21,6 +21,7 @@ func handle_input() -> void:
 
 func physics_update(delta: float) -> void:
 	player.velocity.y += player.get_gravity().y * delta
+	player.velocity.x = move_toward(player.velocity.x, 0, player.decel)
 
 	if not player.is_on_floor():
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.FALL)

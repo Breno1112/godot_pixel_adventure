@@ -18,7 +18,7 @@ func handle_input():
 	if dir == 0:
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 	else:
-		if Input.is_action_just_pressed("run"):
+		if Input.is_action_pressed("run"):
 			state_machine.change_state(PlayerStateMachine.PlayerStateEnum.RUN)
 			return
 
