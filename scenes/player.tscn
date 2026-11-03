@@ -461,6 +461,8 @@ size = Vector2(21, 25)
 scale = Vector2(2, 2)
 script = ExtResource("1_d2wvv")
 max_speed = 500.0
+accel = 800.0
+decel = 800.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=751301151]
 texture_filter = 1

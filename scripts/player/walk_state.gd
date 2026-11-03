@@ -15,7 +15,7 @@ func handle_input():
 	
 	var dir := Input.get_axis("left", "right")
 
-	if dir == 0:
+	if dir == 0 and player.velocity.x == 0:
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.IDLE)
 	else:
 		if Input.is_action_pressed("run"):
@@ -26,10 +26,14 @@ func handle_input():
 func physics_update(delta: float) -> void:
 	var dir := Input.get_axis("left", "right")
 	
-	player.speed = max(player.speed - player.decel * delta, player.min_speed_const)
-
-	player.velocity.x = dir * player.speed
+	decay_player_speed(delta, dir)
+	
 	player.velocity.y += player.get_gravity().y * delta
 
 	if not player.is_on_floor():
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.FALL)
+		
+func decay_player_speed(delta: float, dir: int) -> void:
+	player.speed = max(player.speed - player.decel * delta, player.min_speed_const)
+
+	player.velocity.x = dir * player.speed

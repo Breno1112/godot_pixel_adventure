@@ -21,7 +21,14 @@ func handle_input() -> void:
 
 func physics_update(delta: float) -> void:
 	player.velocity.y += player.get_gravity().y * delta
-	player.velocity.x = move_toward(player.velocity.x, 0, player.decel)
+	
+	decay_player_speed(delta, 0)
 
 	if not player.is_on_floor():
 		state_machine.change_state(PlayerStateMachine.PlayerStateEnum.FALL)
+
+
+func decay_player_speed(delta: float, dir: int) -> void:
+	player.speed = max(player.speed - player.decel * delta, player.min_speed_const)
+
+	player.velocity.x = dir * player.speed
